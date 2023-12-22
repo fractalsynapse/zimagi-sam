@@ -1,0 +1,38 @@
+plugin:
+    source:
+        providers:
+            sam_notices:
+                option:
+                    ptype:
+                        type: str
+                        help: "Procurement Type. Below are the available Procurement Types: p = Pre solicitation, r = Sources Sought, o = Solicitation, k = Combined Synopsis/Solicitation"
+                    postedFrom:
+                        type: str
+                        help: "Posted date From Format must be MM/dd/yyyy. Note: Date range between Posted Date From and To is 1 year"
+                    postedTo:
+                        type: str
+                        help: "Posted date To Format must be MM/dd/yyyy.  Note: Date range between Posted Date From and To is 1 year"
+                    rdlfrom:
+                        type: str
+                        help: "Response Deadline date. Format must be MM/dd/yyyy.  Note: If response date From & To is provided, then the date range is 1 year"
+                    rdlto:
+                        type: str
+                        help: "Response Deadline date. Format must be MM/dd/yyyy.  Note: If response date From & To is provided, then the date range is 1 year"
+                    loadDescriptions:
+                        type: bool
+                        help: "Load descriptions during API search"
+                        default: false
+            sam_organizations:
+                option:
+                    params:
+                        type: dict
+                        help: "Federal Hierarchy filter conditions"
+            sam_entities:
+
+    validator:
+        providers:
+            expired:
+
+    formatter:
+        providers:
+            strip_parenthesis:
