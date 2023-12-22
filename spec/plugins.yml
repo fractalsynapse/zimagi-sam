@@ -28,11 +28,3 @@ plugin:
                         type: dict
                         help: "Federal Hierarchy filter conditions"
             sam_entities:
-
-    validator:
-        providers:
-            expired:
-
-    formatter:
-        providers:
-            strip_parenthesis:
