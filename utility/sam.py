@@ -3,9 +3,10 @@ from bs4 import BeautifulSoup
 
 from .request import request_legacy_session
 from .data import Collection, RecursiveCollection, load_json, get_identifier
-from .project import project_dir
+from .filesystem import filesystem_dir
 from .time import Time
 
+import os
 import urllib
 import requests
 import pandas
@@ -120,7 +121,7 @@ class SAMAPI(object):
         if 'offset' not in params:
             params['offset'] = 0
 
-        with project_dir('sam_cache', 'search') as filesystem:
+        with filesystem_dir(os.path.join(self.command.manager.sam_cache_path, 'search')) as filesystem:
             url = "{}&{}".format(self.opportunity_url, urllib.parse.urlencode(params))
             cache_key = "{}.json".format(get_identifier(url))
             response_text = filesystem.load(cache_key)
@@ -189,7 +190,7 @@ class SAMAPI(object):
         if 'offset' not in params:
             params['offset'] = 0
 
-        with project_dir('sam_cache', 'orgs') as filesystem:
+        with filesystem_dir(os.path.join(self.command.manager.sam_cache_path, 'orgs')) as filesystem:
             url = "{}&{}".format(self.organization_url, urllib.parse.urlencode(params))
             cache_key = "{}.json".format(get_identifier(url))
             response_text = filesystem.load(cache_key)
@@ -221,7 +222,7 @@ class SAMAPI(object):
 
 
     def load_entities(self):
-        with project_dir('sam_entities') as filesystem:
+        with filesystem_dir(self.command.manager.sam_entity_path) as filesystem:
             file_data = filesystem.load('entities.dat')
             for entity in file_data.split("\n"):
                 field_values = entity.removesuffix('!end').split('|')

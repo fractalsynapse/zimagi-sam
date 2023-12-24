@@ -9,6 +9,19 @@ SAM_SOURCE_CODE = Config.string('ZIMAGI_SAM_SOURCE_CODE', 'US-SAM')
 SAM_API_KEY = Config.string('ZIMAGI_SAM_API_KEY')
 
 #
+# SAM entity path
+#
+settings.PROJECT_PATH_MAP['sam_entity_path'] = 'sam_entities'
+
+#
 # Document root path
 #
 settings.PROJECT_PATH_MAP['sam_document_path'] = 'sam_documents'
+
+#
+# Cache path
+#
+settings.PROJECT_PATH_MAP['sam_cache_path'] = {
+    'directory': 'sam_cache',
+    'backup': False
+}
