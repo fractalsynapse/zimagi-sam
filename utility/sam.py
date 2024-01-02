@@ -121,27 +121,13 @@ class SAMAPI(object):
         if 'offset' not in params:
             params['offset'] = 0
 
-        with filesystem_dir(os.path.join(self.command.manager.sam_cache_path, 'search')) as filesystem:
-            url = "{}&{}".format(self.opportunity_url, urllib.parse.urlencode(params))
-            cache_key = "{}.json".format(get_identifier(url))
-            response_text = filesystem.load(cache_key)
-            status_code = 200
+        url = "{}&{}".format(self.opportunity_url, urllib.parse.urlencode(params))
 
-            if not response_text:
-                self.command.data('SAM opportunity search', url)
+        self.command.data('SAM opportunity search', url)
+        response = request_legacy_session().get(url)
+        data = load_json(response.text)
 
-                response = request_legacy_session().get(url)
-                response_text = response.text
-                status_code = response.status_code
-
-                if status_code == 200:
-                    filesystem.save(response_text, cache_key)
-            else:
-                self.command.data('SAM cached opportunity search', url)
-
-        data = load_json(response_text)
-
-        if status_code == 200:
+        if response.status_code == 200:
             return data['opportunitiesData']
         else:
             if 'error' in data:
@@ -149,7 +135,7 @@ class SAMAPI(object):
             else:
                 message = data['errorMessage']
 
-            raise SAMAPIError("SAM Request failed with {} - {}: {}".format(status_code, message, url))
+            raise SAMAPIError("SAM Request failed with {} - {}: {}".format(response.status_code, message, url))
 
 
     def load_organizations(self,
@@ -190,27 +176,13 @@ class SAMAPI(object):
         if 'offset' not in params:
             params['offset'] = 0
 
-        with filesystem_dir(os.path.join(self.command.manager.sam_cache_path, 'orgs')) as filesystem:
-            url = "{}&{}".format(self.organization_url, urllib.parse.urlencode(params))
-            cache_key = "{}.json".format(get_identifier(url))
-            response_text = filesystem.load(cache_key)
-            status_code = 200
+        url = "{}&{}".format(self.organization_url, urllib.parse.urlencode(params))
 
-            if not response_text:
-                self.command.data('SAM organizations', url)
+        self.command.data('SAM organizations', url)
+        response = request_legacy_session().get(url)
+        data = load_json(response.text)
 
-                response = request_legacy_session().get(url)
-                response_text = response.text
-                status_code = response.status_code
-
-                if status_code == 200:
-                    filesystem.save(response_text, cache_key)
-            else:
-                self.command.data('SAM cached organizations', url)
-
-        data = load_json(response_text)
-
-        if status_code == 200:
+        if response.status_code == 200:
             return data['orglist']
         else:
             if 'error' in data:
@@ -218,7 +190,7 @@ class SAMAPI(object):
             else:
                 message = data['errorMessage']
 
-            raise SAMAPIError("SAM Request failed with {} - {}: {}".format(status_code, message, url))
+            raise SAMAPIError("SAM Request failed with {} - {}: {}".format(response.status_code, message, url))
 
 
     def load_entities(self):

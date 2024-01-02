@@ -17,11 +17,3 @@ settings.PROJECT_PATH_MAP['sam_entity_path'] = 'sam_entities'
 # Document root path
 #
 settings.PROJECT_PATH_MAP['sam_document_path'] = 'sam_documents'
-
-#
-# Cache path
-#
-settings.PROJECT_PATH_MAP['sam_cache_path'] = {
-    'directory': 'sam_cache',
-    'backup': False
-}
