@@ -1,5 +1,4 @@
 from django.conf import settings
-from bs4 import BeautifulSoup
 
 from .request import request_legacy_session
 from .data import Collection, RecursiveCollection, load_json, get_identifier
