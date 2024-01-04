@@ -16,8 +16,11 @@ import re
 
 
 def parse_description(command, notice):
-    html_page = command.submit('agent:browser', notice.web_url)
-    description = BeautifulSoup(html_page, 'html.parser').find('div', class_ = 'inner-html-description')
+    webpage = command.parse_webpage(notice.web_url)
+    if webpage.url == 'https://sam.gov/404':
+        raise SAMNoticeMissingError("SAM webpage does not exist")
+
+    description = webpage.soup.find('div', class_ = 'inner-html-description')
 
     if description:
         description.attrs = {}
@@ -30,6 +33,9 @@ def parse_description(command, notice):
 
 
 class SAMAPIError(Exception):
+    pass
+
+class SAMNoticeMissingError(Exception):
     pass
 
 
