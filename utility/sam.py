@@ -201,7 +201,7 @@ class SAMAPI(object):
     def load_entities(self):
         with filesystem_dir(self.command.manager.sam_entity_path) as filesystem:
             file_data = filesystem.load('entities.dat')
-            for entity in file_data.split("\n"):
+            for entity in file_data.split("\n")[1:-1]:
                 field_values = entity.removesuffix('!end').split('|')
 
                 naics = [
@@ -213,6 +213,7 @@ class SAMAPI(object):
                     naics.remove(field_values[32])
                     naics = [field_values[32]] + naics
 
+                self.command.data('Importing', field_values[0])
                 yield Collection(**{
                     'uei': field_values[0],
                     'cage': field_values[3],
