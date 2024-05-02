@@ -80,19 +80,23 @@ class SAMAPI(object):
             count = len(data)
 
             for notice in data:
-                notice['fullParentPathCode'] = re.split(r'\s*\.\s*', notice['fullParentPathCode'])
-                notice['fullParentPathName'] = re.split(r'\s*\.\s*', notice['fullParentPathName'])
-
-                notice['postedDate'] = self.response_time.to_datetime(notice['postedDate']) if notice['postedDate'] else None
-                notice['archiveDate'] = self.response_time.to_datetime(notice['archiveDate']) if notice['archiveDate'] else None
-
                 try:
-                    notice['responseDeadLine'] = self.tz_response_time.to_datetime(notice['responseDeadLine']) if notice['responseDeadLine'] else None
-                except Exception as e:
-                    notice['responseDeadLine'] = self.response_time.to_datetime(notice['responseDeadLine'])
+                    notice['fullParentPathCode'] = re.split(r'\s*\.\s*', notice['fullParentPathCode'])
+                    notice['fullParentPathName'] = re.split(r'\s*\.\s*', notice['fullParentPathName'])
 
-                notice['descriptionUrl'] = notice['description']
-                yield RecursiveCollection(**notice)
+                    notice['postedDate'] = self.response_time.to_datetime(notice['postedDate']) if notice['postedDate'] else None
+                    notice['archiveDate'] = self.response_time.to_datetime(notice['archiveDate']) if notice['archiveDate'] else None
+
+                    try:
+                        notice['responseDeadLine'] = self.tz_response_time.to_datetime(notice['responseDeadLine']) if notice['responseDeadLine'] else None
+                    except Exception as e:
+                        notice['responseDeadLine'] = self.response_time.to_datetime(notice['responseDeadLine'])
+
+                    notice['descriptionUrl'] = notice['description']
+                    yield RecursiveCollection(**notice)
+
+                except Exception as e:
+                    self.command.warning("SAM notice parse failed with: {}".format(e))
 
             offset = offset + count
 
