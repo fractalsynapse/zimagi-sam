@@ -1,7 +1,7 @@
 from django.conf import settings
 
 from .request import request_legacy_session
-from .data import Collection, RecursiveCollection, load_json, get_identifier
+from .data import Collection, RecursiveCollection, load_json, dump_json, get_identifier
 from .filesystem import filesystem_dir
 from .time import Time
 
@@ -96,7 +96,7 @@ class SAMAPI(object):
                     yield RecursiveCollection(**notice)
 
                 except Exception as e:
-                    self.command.warning("SAM notice parse failed with: {}".format(e))
+                    self.command.warning("SAM notice parse failed with: {}: {}".format(e, dump_json(notice, indent = 2)))
 
             offset = offset + count
 
