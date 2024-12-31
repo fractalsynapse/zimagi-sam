@@ -6,6 +6,6 @@ compatibility: ">=0.13.0,<0.14"
 requirements: requirements.txt
 
 modules:
-    - provider: github
-      remote: fractalsynapse/zimagi-browser
+    - provider: git
+      remote: https://github.com/fractalsynapse/zimagi-browser.git
       reference: main
